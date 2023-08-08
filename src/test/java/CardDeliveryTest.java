@@ -139,7 +139,7 @@ class CardDeliveryTest {
         form.$("[data-test-id=date] .input__control").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
         form.$("[data-test-id=date] .input__control").setValue(generateDate(0));
         form.$("[data-test-id=name] .input__control").setValue("Кошечкин молодец");
-        form.$("[data-test-id=phone] .input__control").setValue("+79234567890");
+        form.$("[data-test-id=phone] .input__control").setValue("+79234567891");
         form.$(".checkbox").click();
         form.$(".button").click();
         $("[data-test-id=date] .input__sub").shouldHave(exactText("Заказ на выбранную дату невозможен"));
