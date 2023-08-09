@@ -3,6 +3,7 @@ import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
+import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 
 import static com.codeborne.selenide.Condition.exactText;
@@ -26,7 +27,7 @@ public class PlanningDateTest {
         form.$("[data-test-id=date] .input__control")
                 .setValue(dataGenerator.getMeetingDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         form.$("[data-test-id=date] .input__control").sendKeys(Keys.ENTER);
-        form.$("[data-test-id=agreement]").click();
+        form.$("[data-test-id=agreement]").shouldBe(visible, Duration.ofSeconds(10)).click();
         form.$(".button").click();
         $("[data-test-id=success-notification]").shouldBe(visible);
         $(".notification__title").shouldHave(exactText("Успешно!"));
