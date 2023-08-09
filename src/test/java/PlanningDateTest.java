@@ -25,6 +25,7 @@ public class PlanningDateTest {
         form.$("[data-test-id=date] .input__control").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
         form.$("[data-test-id=date] .input__control")
                 .setValue(dataGenerator.getMeetingDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        form.$("[data-test-id=date] .input__control").sendKeys(Keys.ENTER);
         form.$("[data-test-id=agreement]").click();
         form.$(".button").click();
         $("[data-test-id=success-notification]").shouldBe(visible);
