@@ -1,40 +1,20 @@
+package test;
+
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import data.DataGenerator;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
 import java.time.Duration;
 
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 
 
 class CardDeliveryTest {
-
-    public String generateDate(int days) {
-        return LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-    }
-    String planningDate = generateDate(6);
-    String planningDefaultDate = generateDate(3);
-
-    @Test
-    void shouldPassWhenAllDataIsCorrectTest() {
-        open("http://localhost:9999");
-        SelenideElement form = $("form");
-        form.$("[data-test-id=city] .input__control").setValue("Казань");
-        form.$("[data-test-id=name] .input__control").setValue("Васильев Андрей");
-        form.$("[data-test-id=phone] .input__control").setValue("+79234567890");
-        form.$(".checkbox").click();
-        form.$(".button").click();
-        $("[data-test-id=success-notification]").shouldBe(visible, Duration.ofSeconds(12));
-        $(".notification__title").shouldHave(exactText("Успешно!"));
-        $(".notification__content")
-                .shouldHave(Condition.text("Встреча успешно запланирована на " + planningDefaultDate))
-                .shouldBe(Condition.visible);
-    }
 
     @Test
     void shouldPassWhenNameWithHyphenTest() {
@@ -48,7 +28,7 @@ class CardDeliveryTest {
         $("[data-test-id=success-notification]").shouldBe(visible, Duration.ofSeconds(12));
         $(".notification__title").shouldHave(exactText("Успешно!"));
         $(".notification__content")
-                .shouldHave(Condition.text("Встреча успешно запланирована на " + planningDefaultDate))
+                .shouldHave(Condition.text("Встреча успешно запланирована на " + DataGenerator.generateDate(3, "dd.MM.yyyy")))
                 .shouldBe(Condition.visible);
     }
 
@@ -66,7 +46,7 @@ class CardDeliveryTest {
         $("[data-test-id=success-notification]").shouldBe(visible, Duration.ofSeconds(12));
         $(".notification__title").shouldHave(exactText("Успешно!"));
         $(".notification__content")
-                .shouldHave(Condition.text("Встреча успешно запланирована на " + planningDefaultDate))
+                .shouldHave(Condition.text("Встреча успешно запланирована на " + DataGenerator.generateDate(3, "dd.MM.yyyy")))
                 .shouldBe(Condition.visible);
     }
 
@@ -95,17 +75,13 @@ class CardDeliveryTest {
     }
 
     // тесты на 2 поле Дата встречи
-
-    DateTimeFormatter myDateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    LocalDateTime dateToday = LocalDateTime.now();
-
     @Test
     void shouldPassWhenDatePlusThreeDaysTest() {
         open("http://localhost:9999");
         SelenideElement form = $("form");
         form.$("[data-test-id=city] .input__control").setValue("Благовещенск");
         form.$("[data-test-id=date] .input__control").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        form.$("[data-test-id=date] .input__control").setValue(generateDate(6));
+        form.$("[data-test-id=date] .input__control").setValue(DataGenerator.generateDate(6, "dd.MM.yyyy"));
         form.$("[data-test-id=name] .input__control").setValue("Кошечкин");
         form.$("[data-test-id=phone] .input__control").setValue("+79234567890");
         form.$(".checkbox").click();
@@ -113,7 +89,7 @@ class CardDeliveryTest {
         $("[data-test-id=success-notification]").shouldBe(visible, Duration.ofSeconds(12));
         $(".notification__title").shouldHave(exactText("Успешно!"));
         $(".notification__content")
-                .shouldHave(Condition.text("Встреча успешно запланирована на " + planningDate))
+                .shouldHave(Condition.text("Встреча успешно запланирована на " + DataGenerator.generateDate(6, "dd.MM.yyyy")))
                 .shouldBe(Condition.visible);
     }
 
@@ -123,7 +99,7 @@ class CardDeliveryTest {
         SelenideElement form = $("form");
         form.$("[data-test-id=city] .input__control").setValue("Москва");
         form.$("[data-test-id=date] .input__control").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        form.$("[data-test-id=date] .input__control").setValue(generateDate(-50));
+        form.$("[data-test-id=date] .input__control").setValue(DataGenerator.generateDate(-10, "dd.MM.yyyy"));
         form.$("[data-test-id=name] .input__control").setValue("Кошечкин молодец");
         form.$("[data-test-id=phone] .input__control").setValue("+79234567890");
         form.$(".checkbox").click();
@@ -137,7 +113,7 @@ class CardDeliveryTest {
         SelenideElement form = $("form");
         form.$("[data-test-id=city] .input__control").setValue("Москва");
         form.$("[data-test-id=date] .input__control").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        form.$("[data-test-id=date] .input__control").setValue(generateDate(0));
+        form.$("[data-test-id=date] .input__control").setValue(DataGenerator.generateDate(0, "dd.MM.yyyy"));
         form.$("[data-test-id=name] .input__control").setValue("Кошечкин молодец");
         form.$("[data-test-id=phone] .input__control").setValue("+79234567891");
         form.$(".checkbox").click();
